@@ -1,4 +1,4 @@
-package mcdb
+package dynamo
 
 import (
 	"errors"

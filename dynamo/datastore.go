@@ -1,4 +1,4 @@
-package mcdb
+package dynamo
 
 // DBSearchByEmail search type for email
 type DBSearchByEmail string
