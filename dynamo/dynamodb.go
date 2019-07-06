@@ -17,7 +17,7 @@ type DB struct {
 
 // GenerateExpression extract type name of a structure and concantenate string
 // to updateExpression in dynamodb
-func GenerateExpression(f interface{}, attributes string, excludekeyword string, omitkey string) string {
+func GenerateExpression(f interface{}, attributes string, omitkey string) string {
 	var expression string
 	fm := f.(map[string]interface{})
 	i := 0
@@ -218,7 +218,7 @@ func (db *DB) Add(item interface{}) error {
 // Update update user details
 func (db *DB) Update(id string, item interface{}) error {
 	attribValue := AddAttributeValue(item, "id")
-	expression := GenerateExpression(item, "set", "timezone", "id")
+	expression := GenerateExpression(item, "set", "id")
 	input := &dynamodb.UpdateItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"id": {
