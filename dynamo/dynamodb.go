@@ -26,8 +26,6 @@ func GenerateExpression(f interface{}, attributes string, omitkey string) string
 			if len(v.(string)) > 0 {
 				if i == 0 {
 					expression = expression + attributes + " " + k + " = " + ":" + k + ","
-				} else if i == 1 {
-					expression = expression + " " + k + " = " + ":" + k
 				} else {
 					expression = expression + " " + k + " = " + ":" + k
 				}
@@ -35,9 +33,7 @@ func GenerateExpression(f interface{}, attributes string, omitkey string) string
 			}
 		}
 	}
-	if i == 1 {
-		expression = expression[:len(expression)-1]
-	}
+	expression = expression[:len(expression)-1]
 	return expression
 }
 
