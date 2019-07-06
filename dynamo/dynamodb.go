@@ -24,9 +24,6 @@ func GenerateExpression(f interface{}, attributes string, excludekeyword string,
 	for k, v := range fm {
 		if k != omitkey {
 			if len(v.(string)) > 0 {
-				if k == excludekeyword {
-					k = "x" + excludekeyword
-				}
 				if i == 0 {
 					expression = expression + attributes + " " + k + " = " + ":" + k + ","
 				} else {
