@@ -27,7 +27,7 @@ func GenerateExpression(f interface{}, attributes string, omitkey string) string
 				if i == 0 {
 					expression = expression + attributes + " " + k + " = " + ":" + k + ","
 				} else {
-					expression = expression + " " + k + " = " + ":" + k
+					expression = expression + " " + k + " = " + ":" + k + ","
 				}
 				i++
 			}
