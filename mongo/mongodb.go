@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"errors"
+	"log"
 
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -79,6 +80,7 @@ func (db *DB) UpdateUser(id string, user interface{}) error {
 
 // ListUsers -
 func (db *DB) ListUsers(user interface{}) error {
+	log.Println("Table:", db.TableName)
 	if err := db.Collection[db.TableName].Find(nil).All(user); err != nil {
 		return err
 	}
