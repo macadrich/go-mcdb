@@ -1,11 +1,11 @@
 package mongo
 
-// Datastore -
+// Datastore mongo database interface
 type Datastore interface {
-	DeleteUser(id string) error
-	GetUserByID(id string) error
-	GetUser(email string, user interface{}) error
-	AddUser(user interface{}) (id string, err error)
-	UpdateUser(user interface{}) error
-	ListUsers(users interface{}) error
+	AddTable(tableName string)
+	Delete(key string) error
+	Get(key string, item interface{}) error
+	Add(item interface{}) (id string, err error)
+	Update(item interface{}) error
+	List(item interface{}) error
 }
