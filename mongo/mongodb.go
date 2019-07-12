@@ -9,8 +9,9 @@ import (
 
 // DB -
 type DB struct {
-	Conn *mgo.Session
-	User *mgo.Collection
+	Conn       *mgo.Session
+	TableName  string
+	Collection map[string]*mgo.Collection
 }
 
 // NewMongoDB initialize mongodb with credential and source
@@ -27,7 +28,9 @@ func NewMongoDB(host, username, password, database, source string) (*DB, error) 
 		return nil, errors.New(err.Error())
 	}
 	return &DB{
-		Conn: conn,
+		Conn:       conn,
+		TableName:  "",
+		Collection: make(map[string]*mgo.Collection),
 	}, nil
 }
 
@@ -38,14 +41,14 @@ func (db *DB) Close() {
 
 // DeleteUser delete user in database
 func (db *DB) DeleteUser(id string) error {
-	return db.User.Remove(bson.D{{Name: "id", Value: id}})
+	return db.Collection[db.TableName].Remove(bson.D{{Name: "id", Value: id}})
 }
 
 // GetUserByID get user using by id
 // @param id search key
 // @param user object to cast
 func (db *DB) GetUserByID(id string, user interface{}) error {
-	if err := db.User.Find(bson.D{{Name: "id", Value: id}}).One(user); err != nil {
+	if err := db.Collection[db.TableName].Find(bson.D{{Name: "id", Value: id}}).One(user); err != nil {
 		return errors.New(err.Error())
 	}
 	return nil
@@ -55,7 +58,7 @@ func (db *DB) GetUserByID(id string, user interface{}) error {
 // @param email search key
 // @param user object to cast
 func (db *DB) GetUser(email string, user interface{}) error {
-	if err := db.User.Find(bson.D{{Name: "email", Value: email}}).One(user); err != nil {
+	if err := db.Collection[db.TableName].Find(bson.D{{Name: "email", Value: email}}).One(user); err != nil {
 		return err
 	}
 	return nil
@@ -63,7 +66,7 @@ func (db *DB) GetUser(email string, user interface{}) error {
 
 // AddUser saves a given user, assigning it a new ID.
 func (db *DB) AddUser(obj interface{}) (id string, err error) {
-	if err := db.User.Insert(obj); err != nil {
+	if err := db.Collection[db.TableName].Insert(obj); err != nil {
 		return "", errors.New(err.Error())
 	}
 	return id, nil
@@ -71,12 +74,12 @@ func (db *DB) AddUser(obj interface{}) (id string, err error) {
 
 // UpdateUser -
 func (db *DB) UpdateUser(id string, user interface{}) error {
-	return db.User.Update(bson.D{{Name: "id", Value: id}}, user)
+	return db.Collection[db.TableName].Update(bson.D{{Name: "id", Value: id}}, user)
 }
 
 // ListUsers -
 func (db *DB) ListUsers(user interface{}) error {
-	if err := db.User.Find(nil).All(user); err != nil {
+	if err := db.Collection[db.TableName].Find(nil).All(user); err != nil {
 		return err
 	}
 	return nil
