@@ -52,14 +52,14 @@ func (db *DB) Table(name string) *DB {
 }
 
 // Delete delete item in database
-func (db *DB) Delete(key string) error {
+func (db *DB) Delete(key string, value string) error {
 	return db.Collection[db.TableName].Remove(bson.D{{Name: key, Value: key}})
 }
 
 // Get get item using by id
 // @param key search key
 // @param item object to cast
-func (db *DB) Get(key, value string, item interface{}) error {
+func (db *DB) Get(key string, value string, item interface{}) error {
 	if err := db.Collection[db.TableName].Find(bson.D{{Name: key, Value: value}}).One(item); err != nil {
 		return errors.New(err.Error())
 	}
