@@ -51,14 +51,14 @@ func (db *DB) Table(name string) *DB {
 	return db
 }
 
-// Delete delete user in database
+// Delete delete item in database
 func (db *DB) Delete(key string) error {
 	return db.Collection[db.TableName].Remove(bson.D{{Name: key, Value: key}})
 }
 
-// Get get user using by id
-// @param id search key
-// @param user object to cast
+// Get get item using by id
+// @param key search key
+// @param item object to cast
 func (db *DB) Get(key string, item interface{}) error {
 	if err := db.Collection[db.TableName].Find(bson.D{{Name: key, Value: key}}).One(item); err != nil {
 		return errors.New(err.Error())
@@ -66,7 +66,7 @@ func (db *DB) Get(key string, item interface{}) error {
 	return nil
 }
 
-// Add saves a given user, assigning it a new ID.
+// Add saves a given item, assigning it a new ID.
 func (db *DB) Add(item interface{}) (id string, err error) {
 	if err := db.Collection[db.TableName].Insert(item); err != nil {
 		return "", errors.New(err.Error())
