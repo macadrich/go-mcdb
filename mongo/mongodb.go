@@ -59,8 +59,8 @@ func (db *DB) Delete(key string) error {
 // Get get item using by id
 // @param key search key
 // @param item object to cast
-func (db *DB) Get(key string, item interface{}) error {
-	if err := db.Collection[db.TableName].Find(bson.D{{Name: key, Value: key}}).One(item); err != nil {
+func (db *DB) Get(key, value string, item interface{}) error {
+	if err := db.Collection[db.TableName].Find(bson.D{{Name: key, Value: value}}).One(item); err != nil {
 		return errors.New(err.Error())
 	}
 	return nil
@@ -75,8 +75,8 @@ func (db *DB) Add(item interface{}) (id string, err error) {
 }
 
 // Update update fields in database
-func (db *DB) Update(key string, item interface{}) error {
-	return db.Collection[db.TableName].Update(bson.D{{Name: key, Value: key}}, item)
+func (db *DB) Update(key string, value string, item interface{}) error {
+	return db.Collection[db.TableName].Update(bson.D{{Name: key, Value: value}}, item)
 }
 
 // List view list of data
