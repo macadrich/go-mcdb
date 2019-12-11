@@ -3,7 +3,6 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"go-mcdb/util"
 
 	"errors"
 
@@ -65,28 +64,16 @@ func (db *DB) Close() (err error) {
 	return
 }
 
-// Add insert items
-// users is a table
+// Add insert items in table
 func (db *DB) Add(item ...interface{}) (id int64, err error) {
-	rg := util.NewMCRegExp(`\$`, `INSERT INTO users (email, username, password, created, updated) VALUES ($1, $2, $3, $4, $5) RETURNING user_id`)
-	fmt.Println("result:", rg.Match, rg.Count())
-	fmt.Println("items:", len(item))
-
-	// if len(item) != rg.Count() {
-	// 	return -1, nil
-	// }
-	fmt.Println("Call INSERT:", item)
-	insertStmt := `INSERT INTO users (email, username, password, created, updated) VALUES ($1, $2, $3, $4, $5) RETURNING user_id`
-
-	_, err = db.Database.Exec(insertStmt, item...)
+	insertStmt := `INSERT INTO users (email, username, password, created, updated) VALUES ($1, $2, $3, $4, $5)`
+	result, err := db.Database.Exec(insertStmt, item...)
 	if err != nil {
 		return -1, err
 	}
-	// id, err = result.LastInsertId()
-	// if err != nil {
-	// 	return -1, err
-	// }
-	//return id, nil
-	fmt.Println("Result ID:", id)
+	id, err = result.RowsAffected()
+	if err != nil {
+		return -1, err
+	}
 	return id, nil
 }

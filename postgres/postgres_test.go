@@ -6,8 +6,17 @@ import (
 	"time"
 )
 
+const (
+	HOST     = "localhost"
+	PORT     = 5432
+	USER     = "user123"
+	PASSWORD = "password123"
+	DATABASE = "records"
+	SSLMODE  = "disable"
+)
+
 func TestPostgresConnection(t *testing.T) {
-	db, err := ConnectDB("localhost", 5432, "adriel", "postgresAD32", "people", "disable")
+	db, err := ConnectDB(HOST, PORT, USER, PASSWORD, DATABASE, SSLMODE)
 	t.Run("postgres connection", func(t *testing.T) {
 		if err != nil {
 			t.Errorf("Error connecting postgresql: %s", err.Error())
@@ -21,19 +30,15 @@ func TestPostgresConnection(t *testing.T) {
 
 func TestAddItem(t *testing.T) {
 	t.Run("connect to postgresql database", func(t *testing.T) {
-		db, err := ConnectDB("localhost", 5432, "adriel", "postgresAD32", "people", "disable")
+		db, err := ConnectDB(HOST, PORT, USER, PASSWORD, DATABASE, SSLMODE)
 		if err != nil {
 			t.Errorf("Error connecting postgresql: %s", err.Error())
 			return
 		}
-		log.Println("Connection success:", db)
-
-		// (age, email, first_name, last_name)
-
-		_, err = db.Add("ken@gmail.com", "ken", "password567", time.Now().Unix(), time.Now().Unix())
+		_, err = db.Add("test3@gmail.com", "test3", "password1235", time.Now(), time.Now())
 		if err != nil {
 			t.Error(err)
 		}
+		log.Println("Add item success:", db)
 	})
-
 }
