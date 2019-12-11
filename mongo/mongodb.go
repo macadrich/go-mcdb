@@ -12,7 +12,7 @@ const (
 	MongoDBErrTableName = "mongodb: table not set"
 )
 
-// TableName holds table name type string
+// TableName holds table name type as string
 type TableName string
 
 func (tn TableName) length() int {
